@@ -47,25 +47,14 @@ namespace SistemaDeRecarga.Controllers
             }
         }
 
-        [HttpPost("tranferir")]
-        public async Task<IActionResult> TransferirSaldoAsync([FromBody] TransferenciaRequest request)
+        [HttpGet("usuario/{idUser}")]
+        public async Task<IActionResult> GetTransacaoByIdUserAsync(int idUser, [FromQuery] DateTime? startDate = null, [FromQuery] DateTime? endDate = null)
         {
             try
             {
-                var result = await _balanceBusiness.TransferirSaldoAsync(
-                    request.IdRemetente,
-                    request.IdDestinatario,
-                    request.Valor,
-                    request.Description);
+                var transacoes = await _transacaoBusiness.GetTransacaoByIdUserWithDatesAsync(idUser, startDate, endDate);
 
-                var successResponse = new
-                {
-                    Success = true,
-                    Message = "Tranferência realizada com sucesso",
-                    Data = result
-                };
-
-                return StatusCode(StatusCodes.Status201Created, successResponse);
+                return Ok(transacoes);
             }
             catch (Exception ex)
             {

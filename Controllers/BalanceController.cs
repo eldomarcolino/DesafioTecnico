@@ -83,5 +83,31 @@ namespace SistemaDeRecarga.Controllers
                 return BadRequest(new { Success = false, Message = ex.Message });
             }
         }
+
+        [HttpPost("transferir")]
+        public async Task<IActionResult> TransferirSaldoAsync([FromBody] TransferenciaRequest request)
+        {
+            try
+            {
+                var result = await _balanceBusiness.TransferirSaldoAsync(
+                    request.IdRemetente,
+                    request.IdDestinatario,
+                    request.Valor,
+                    request.Description);
+
+                var successResponse = new
+                {
+                    Success = true,
+                    Message = "Tranferência realizada com sucesso",
+                    Data = result
+                };
+
+                return StatusCode(StatusCodes.Status201Created, successResponse);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(new { Success = false, Message = ex.Message });
+            }
+        }
     }
 }

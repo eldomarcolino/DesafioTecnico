@@ -29,6 +29,26 @@ namespace SistemaDeRecarga.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Transacao>> GetTransacaoByIdUserWithDatesAsync(int idUser, DateTime? startDate, DateTime? endDate)
+        {
+            IQueryable<Transacao> query = _context.Transaction
+                .Where(t => t.IdUser == idUser);
+
+            if (startDate.HasValue)
+            {
+                query = query.Where(t => t.TransactionDate >= startDate.Value);
+            }
+
+            if (endDate.HasValue)
+            {
+                query = query.Where(t => t.TransactionDate <= endDate.Value);
+            }
+
+            return await query
+                .OrderByDescending(t => t.TransactionDate)
+                .ToListAsync();
+        }
+
         public async Task CreateTransacaoAsync(Transacao transacao)
         {
             await _context.Transaction.AddAsync(transacao);

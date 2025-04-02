@@ -20,5 +20,10 @@ namespace SistemaDeRecarga.Business
         {
             return await _transacaoRepository.GetTransacaoByIdUserAsync(idUser);
         }
+
+        public async Task<IEnumerable<Transacao>> GetTransacaoByIdUserWithDatesAsync(int idUser, DateTime? startDate, DateTime? endDate)
+        {
+            return await _transacaoRepository.GetTransacaoByIdUserWithDatesAsync(idUser, startDate, endDate);
+        }
     }
 }
