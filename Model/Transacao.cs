@@ -13,6 +13,9 @@ namespace SistemaDeRecarga.Model
         [ForeignKey("IdUser")]
         public int IdUser { get; set; }
 
+        [ForeignKey("User")]
+        public int? IdDestinatario { get; set; }
+
         [Required]
         [Column(TypeName = "decimal(18,2)")]
         public decimal Valor { get; set; }

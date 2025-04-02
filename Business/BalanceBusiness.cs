@@ -124,6 +124,57 @@ namespace SistemaDeRecarga.Business
 
             return saldo;
         }
+
+        public async Task<Transacao> TransferirSaldoAsync(int idRemetente, int idDestinatario, decimal valor, string description)
+        {
+            if (valor <= 0)
+            {
+                throw new Exception("Saldo insuficiente");
+            }
+
+            var remetente = await _userRepository.GetUserByIdAsync(idRemetente);
+            var destinatario = await _userRepository.GetUserByIdAsync(idDestinatario);
+
+            if (remetente == null || destinatario == null)
+            {
+                throw new Exception("Usuário remetene ou destinatário inválido");
+            }
+
+            //Débito do remetente
+            var saldoRemetente = await GetBalanceByIdUserAsync(idRemetente);
+            if (saldoRemetente.Amount < valor)
+            {
+                throw new Exception("Saldo insuficiente");
+            }
+
+            saldoRemetente.Amount -= valor;
+            await _balanceRepository.UpdateBalanceAsync(saldoRemetente);
+
+            //Crédito no destinatário
+            var saldoDestinatario = await GetBalanceByIdUserAsync(idDestinatario);
+            saldoDestinatario.Amount += valor;
+            await _balanceRepository.UpdateBalanceAsync(saldoDestinatario);
+
+            //Registrar transação
+            var transacao = new Transacao
+            {
+                IdUser = idRemetente,
+                IdDestinatario = idDestinatario,
+                Valor = valor,
+                Type = "Tranferência",
+                Description = description,
+                TransactionDate = DateTime.Now
+            };
+
+            if (transacao.Id == 0)
+            {
+                transacao.Id = await _transacaoRepository.GetLastIdAsync() + 1;
+            }
+
+            await _transacaoRepository.CreateTransacaoAsync(transacao);
+
+            return transacao;
+        }
     }
 
 
