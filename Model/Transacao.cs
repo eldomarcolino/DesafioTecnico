@@ -18,7 +18,7 @@ namespace SistemaDeRecarga.Model
         public decimal Valor { get; set; }
 
         [Required]
-        public string Type { get; set; } // "Recarga" ou "Débido"
+        public string Type { get; set; } // "Recarga" , "Débido" ou "Transferência"
 
         [MaxLength(255)]
         public string Description { get; set; }
@@ -27,7 +27,16 @@ namespace SistemaDeRecarga.Model
 
         [JsonIgnore]
         public User? User { get; set; }
+
         [JsonIgnore]
         public User? Destinatario { get; set; }
+    }
+
+    public class TransferenciaRequest
+    {
+        public int IdRemetente { get; set; }
+        public int IdDestinatario { get; set; }
+        public decimal Valor { get; set; }
+        public string Description { get; set; }
     }
 }
