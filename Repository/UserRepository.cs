@@ -13,18 +13,13 @@ namespace SistemaDeRecarga.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<User>> GetAllUserFilterAsync(int? id = null, int? idCourse = null, string username = null, string role = null)
+        public async Task<IEnumerable<User>> GetAllUserFilterAsync(int? id = null, string username = null, string role = null)
         {
             IQueryable<User> query = _context.User;
 
             if (id.HasValue)
             {
                 query = query.Where(u => u.Id == id.Value);
-            }
-
-            if(idCourse.HasValue)
-            {
-                query = query.Where(u => u.IdCourse == idCourse.Value);
             }
 
             if(!string.IsNullOrEmpty(username))

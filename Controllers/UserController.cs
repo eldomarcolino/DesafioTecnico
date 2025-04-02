@@ -18,14 +18,13 @@ namespace SistemaDeRecarga.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllUserFilterAsync([FromQuery]int? id = null, int? idCourse = null, string username = null, string role = null)
+        public async Task<IActionResult> GetAllUserFilterAsync([FromQuery]int? id = null, string username = null, string role = null)
         {
-            var users = await _userBusiness.GetAllUserFilterAsync(id, idCourse, username, role);
+            var users = await _userBusiness.GetAllUserFilterAsync(id, username, role);
 
             var userDto = users.Select(u => new UserDTO
             {
                 Id = u.Id,
-                IdCourse = u.IdCourse,
                 Username = u.Username,
                 Email = u.Email,
                 RegistrationNumber = u.RegistrationNumber,

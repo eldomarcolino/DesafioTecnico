@@ -10,9 +10,6 @@ namespace SistemaDeRecarga.Model
         [Key]
         public int Id { get; set; }
 
-        [ForeignKey("IdCourse")]
-        public int IdCourse { get; set; }
-
         [MaxLength(100)]
         public string Username { get; set; }
 
@@ -29,10 +26,6 @@ namespace SistemaDeRecarga.Model
         public string Role { get; set; }
 
         public DateTime Createdate { get; set; }
-
-        [JsonIgnore]
-        [ForeignKey("IdCourse")]
-        public Curso? IdCourseNavigation { get; set; }
 
         [JsonIgnore]
         public Balance? Balance { get; set; }

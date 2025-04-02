@@ -8,7 +8,6 @@ namespace SistemaDeRecarga.Context
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         // Definir as tabelas como DbSet
-        public DbSet<Curso> Curso { get; set; }
         public DbSet<User> User { get; set; }
         public DbSet<Balance> Balance { get; set; }
         public DbSet<Transacao> Transaction { get; set; }
@@ -23,17 +22,10 @@ namespace SistemaDeRecarga.Context
 
 
 
-            modelBuilder.Entity<Curso>()
-                .HasIndex(x => x.Name).IsUnique();
-
 
             //Configuração de relacionamentos
 
 
-            modelBuilder.Entity<User>()
-                .HasOne(u => u.IdCourseNavigation)
-                .WithMany(c => c.Users)
-                .HasForeignKey(u => u.IdCourse);
 
             modelBuilder.Entity<Balance>() //Configuraçao para Salso
                 .HasOne(u => u.User)
